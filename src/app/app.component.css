@@ -1,0 +1,12 @@
+input.ng-invalid{
+  border: 3px solid red;
+}
+input.ng-valid{
+  border: 3px solid green;
+}
+h1{
+  color: red;
+}
+h3{
+  color: green;
+}
