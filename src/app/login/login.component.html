@@ -1,0 +1,27 @@
+<form #formRef="ngForm" (ngSubmit)=onSubmit(formRef.value)>
+  <fieldset ngModelGroup="login">
+    <div>
+      <div>
+        <input class="ng-invalid" required minlength="6" type="text" name="username" [(ngModel)]="username" #usernameRef="ngModel"/>
+        <span *ngIf="usernameRef.errors?.required">请填写用户名</span>
+        <span *ngIf="usernameRef.errors?.minlength">不能少于6位</span>
+        <p>
+          <input class="ng-invalid" required minlength="8" type="password" name="passowrd" [(ngModel)]="password" #passwordRef="ngModel"/>
+          <span *ngIf="passwordRef.errors?.required">请填写密码</span>
+          <span *ngIf="passwordRef.errors?.minlength">不能少于8位</span>
+      </div>
+      <p>{{strings}}</p>
+      <div>
+        <h3>Tips</h3>
+        <p>{{usernameRef.errors | json}}</p>
+        {{passwordRef.errors | json}}
+      </div>
+      <p>
+      <div>
+        <button (click)="onClick2(usernameRef.value, passwordRef.value)">onClick2</button>
+        <button (click)="onClick()">onClick</button>
+        <button type="submit">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
