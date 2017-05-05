@@ -20,8 +20,11 @@ export class TodoComponent implements OnInit {
   desc = '';
   todos : Todo[];
 
-  addTodo() {
+  onTextChanges(value) {
+    this.desc = value;
+  }
 
+  addTodo() {
     this.todoService
       .PreAddTodo(this.desc)
       .then(todo => {
@@ -31,7 +34,6 @@ export class TodoComponent implements OnInit {
   }
 
   toggleTodo(todo: Todo) {
-
     const i = this.todos.indexOf(todo);
     this.todoService
       .PreToggleTodo(todo)
@@ -41,7 +43,6 @@ export class TodoComponent implements OnInit {
   }
 
   removeTodo(todo: Todo) {
-
     const i = this.todos.indexOf(todo);
     this.todoService
       .PreDeleteTodoById(todo.id)
@@ -51,11 +52,11 @@ export class TodoComponent implements OnInit {
   }
 
   getTodos(): void {
-
     this.todoService
       .PreGetTodos()
       .then(todos => this.todos = [...todos]);
   }
+
 }
 
 
