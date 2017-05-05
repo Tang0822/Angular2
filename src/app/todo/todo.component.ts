@@ -1,24 +1,28 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, Inject, OnInit} from '@angular/core'
 import {Todo} from './todo.model';
-import {TodoService} from './todoServices';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css'],
-  providers: [TodoService]
 })
 
 export class TodoComponent implements OnInit {
 
-  constructor(private todoService: TodoService) {}
+  desc = '';
+  todos: Todo[] = [];
 
-  ngOnInit() {
-    this.getTodos();
+  constructor(@Inject('todoService') private todoService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
-  desc = '';
-  todos : Todo[];
+  ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      let filter = params['filter'];
+      this.filterTodos(filter);
+    })
+  }
 
   onTextChanges(value) {
     this.desc = value;
@@ -33,87 +37,40 @@ export class TodoComponent implements OnInit {
       })
   }
 
-  toggleTodo(todo: Todo) {
+  toggleTodo(todo: Todo): Promise<void> {
     const i = this.todos.indexOf(todo);
-    this.todoService
+    return this.todoService
       .PreToggleTodo(todo)
       .then(t => {
         this.todos = [...this.todos.slice(0, i), t, ...this.todos.slice(i + 1)];
+        return null;
       });
   }
 
-  removeTodo(todo: Todo) {
+  removeTodo(todo: Todo): Promise<void> {
     const i = this.todos.indexOf(todo);
-    this.todoService
+    return this.todoService
       .PreDeleteTodoById(todo.id)
       .then(() => {
         this.todos = [...this.todos.slice(0, i), ...this.todos.slice(i + 1)];
+        return null;
       });
   }
 
-  getTodos(): void {
+  filterTodos(filter: string): void {
     this.todoService
-      .PreGetTodos()
+      .PreFilterTodos(filter)
       .then(todos => this.todos = [...todos]);
   }
 
+  toggleAll() {
+    Promise.all(this.todos.map(todo => this.toggleTodo(todo)));
+  }
+
+  clearCompleted() {
+    const completed_todos = this.todos.filter(todo => todo.completed == true);
+    const active_todos = this.todos.filter(todo => todo.completed == false);
+    Promise.all(completed_todos.map(todo => this.todoService.PreDeleteTodoById(todo.id)))
+      .then(() => this.todos = [...active_todos]);
+  }
 }
-
-
-
-//课程代码
-/*import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todoServices';
-import { Todo } from './todo.model';
-
-@Component({
-  selector: 'app-todo',
-  templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css'],
-  providers: [TodoService]
-})
-export class TodoComponent implements OnInit {
-  todos : Todo[];
-  desc = '';
-
-  constructor(private service: TodoService) {}
-  ngOnInit() {
-    this.getTodos();
-  }
-  addTodo(){
-    this.service
-      .addTodo(this.desc)
-      .then(todo => {
-        this.todos = [...this.todos, todo];
-        this.desc = '';
-      });
-  }
-  toggleTodo(todo: Todo) {
-    const i = this.todos.indexOf(todo);
-    this.service
-      .toggleTodo(todo)
-      .then(t => {
-        this.todos = [
-          ...this.todos.slice(0,i),
-          t,
-          ...this.todos.slice(i+1)
-        ];
-      });
-  }
-  removeTodo(todo: Todo) {
-    const i = this.todos.indexOf(todo);
-    this.service
-      .deleteTodoById(todo.id)
-      .then(()=> {
-        this.todos = [
-          ...this.todos.slice(0,i),
-          ...this.todos.slice(i+1)
-        ];
-      });
-  }
-  getTodos(): void {
-    this.service
-      .getTodos()
-      .then(todos => this.todos = [...todos]);
-  }
-}*/
