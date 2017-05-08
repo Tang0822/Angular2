@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UUID} from 'angular2-uuid';
-import {Todo} from './todo.model';
+import {Todo} from '../domain/entities';
 import {Http, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise'
 
@@ -15,10 +15,12 @@ export class TodoService {
   }
 
   PreAddTodo(desc: string): Promise<Todo> {
+    const userId: number = +localStorage.getItem('userId');
     let todo = {
       id: UUID.UUID(),
       desc: desc,
-      completed: false
+      completed: false,
+      userId: userId
     };
 
     return this.http
@@ -32,7 +34,6 @@ export class TodoService {
     const url = `${this.API_URL}/${todo.id}`;
     console.log(url);
     let updateTodo = Object.assign({}, todo, {completed: !todo.completed});
-
     return this.http
       .put(url, JSON.stringify({completed: !todo.completed}), {headers: this.headers})
       .toPromise()
@@ -52,21 +53,25 @@ export class TodoService {
   }
 
   PreGetTodos(): Promise<Todo[]> {
-    return this.http.get(this.API_URL)
+    const userId = +localStorage.getItem('userId');
+    const url = `${this.API_URL}?userId=${userId}`
+    return this.http.get(url)
       .toPromise()
       .then(res => res.json() as Todo[])
       .catch(this.handleError)
   }
 
   PreFilterTodos(filter: string): Promise<Todo[]> {
+    const userId = +localStorage.getItem('userId');
+    const url = `${this.API_URL}?userId=${userId}`
     switch (filter) {
       case 'ACTIVE': return this.http
-        .get(`${this.API_URL}?completed=false`)
+        .get(`${url}$completed=false`)
         .toPromise()
         .then(res => res.json() as Todo[])
         .catch(this.handleError);
       case 'COMPLETED': return this.http
-        .get(`${this.API_URL}?completed=true`)
+        .get(`${url}&completed=true`)
         .toPromise()
         .then(res => res.json() as Todo[])
         .catch(this.handleError);

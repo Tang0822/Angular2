@@ -5,10 +5,10 @@ import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
-import {AuthService, UserService} from './login/loginService';
 import {routing} from './app.routes'
 
 import {TodoModule} from './todo/todo.module';
+import {CoreModule} from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -20,14 +20,10 @@ import {TodoModule} from './todo/todo.module';
     FormsModule,
     HttpModule,
     routing,
-    TodoModule
+    TodoModule,
+    CoreModule
   ],
 
-  // 方法三： 不需要在login.component中单独import
-  providers: [
-    {provide: 'auth', useClass: AuthService},
-    {provide: 'user', useClass: UserService}
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
