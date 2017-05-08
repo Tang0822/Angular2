@@ -1,3 +1,5 @@
+// app-list是app-item的父级。
+// 父级
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {Todo} from '../todo.model';
 
@@ -10,10 +12,13 @@ export class TodoListComponent implements OnInit {
 
   _todos: Todo[] = [];
 
+  // 使用@Input获取传递过来的数据
   @Input()
+  //todos的写方法
   set todos(todos: Todo[]) {
     this._todos = [...todos];
   }
+  //todos的读方法
   get todos() {
     return this._todos;
   }

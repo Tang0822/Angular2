@@ -1,3 +1,5 @@
+// app-iem是app-list的子级。
+// 子级
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
@@ -7,8 +9,8 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 })
 export class TodoItemComponent implements OnInit {
 
-  @Input() isChecked: boolean = false;
-  @Input() todoDesc: string = '';
+  @Input() isChecked: boolean;
+  @Input() todoDesc: string;
 
   @Output() onToggleTriggered = new EventEmitter<boolean>();
   @Output() onRemoveTriggered = new EventEmitter<boolean>();

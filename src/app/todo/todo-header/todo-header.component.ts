@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ElementRef, Input} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ElementRef} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
@@ -16,8 +16,8 @@ export class TodoHeaderComponent implements OnInit {
   }
 
   inputValue: string = '';
-  @Input() placeholder: string = 'What needs to be done?';
-  @Input() delay: number = 300;
+  placeholder: string = 'What needs to be done?';
+  delay: number = 300;
 
   @Output() onTextChanges = new EventEmitter<string>();
   @Output() onEnterUp = new EventEmitter<boolean>();

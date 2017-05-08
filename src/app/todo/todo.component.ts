@@ -24,6 +24,13 @@ export class TodoComponent implements OnInit {
     })
   }
 
+  filterTodos(filter: string): void {
+    this.todoService
+      .PreFilterTodos(filter)
+      .then(todos => this.todos = [...todos]);
+  }
+
+  // ---------------------------app-todo-header子组件------------------------------
   onTextChanges(value) {
     this.desc = value;
   }
@@ -37,16 +44,7 @@ export class TodoComponent implements OnInit {
       })
   }
 
-  toggleTodo(todo: Todo): Promise<void> {
-    const i = this.todos.indexOf(todo);
-    return this.todoService
-      .PreToggleTodo(todo)
-      .then(t => {
-        this.todos = [...this.todos.slice(0, i), t, ...this.todos.slice(i + 1)];
-        return null;
-      });
-  }
-
+  // ---------------------------app-todo-list子组件--------------------------------
   removeTodo(todo: Todo): Promise<void> {
     const i = this.todos.indexOf(todo);
     return this.todoService
@@ -57,20 +55,26 @@ export class TodoComponent implements OnInit {
       });
   }
 
-  filterTodos(filter: string): void {
-    this.todoService
-      .PreFilterTodos(filter)
-      .then(todos => this.todos = [...todos]);
+  toggleTodo(todo: Todo): Promise<void> {
+    const i = this.todos.indexOf(todo);
+    return this.todoService
+      .PreToggleTodo(todo)
+      .then(t => {
+        this.todos = [...this.todos.slice(0, i), t, ...this.todos.slice(i + 1)];
+        return null;
+      });
   }
 
   toggleAll() {
     Promise.all(this.todos.map(todo => this.toggleTodo(todo)));
   }
 
+  // ---------------------------app-todo-footer子组件------------------------------
   clearCompleted() {
     const completed_todos = this.todos.filter(todo => todo.completed == true);
     const active_todos = this.todos.filter(todo => todo.completed == false);
     Promise.all(completed_todos.map(todo => this.todoService.PreDeleteTodoById(todo.id)))
       .then(() => this.todos = [...active_todos]);
   }
+
 }
