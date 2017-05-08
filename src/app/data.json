@@ -1,16 +1,12 @@
 {
   "todos": [
     {
-      "completed": false,
-      "desc": "到沙asdf发",
-      "id": "b78ccd70-0a62-1250-996f-a6c237de74f6",
-      "userId": 1
+      "completed": true,
+      "id": "b78ccd70-0a62-1250-996f-a6c237de74f6"
     },
     {
-      "id": "13b2b5a0-5be2-6c6d-fb15-e552de246dab",
-      "desc": "到沙发",
-      "completed": false,
-      "userId": 1
+      "completed": true,
+      "id": "13b2b5a0-5be2-6c6d-fb15-e552de246dab"
     },
     {
       "id": "2d0f2ecc-1f06-da8a-c0b3-8be7ffb5064f",
@@ -25,10 +21,8 @@
       "userId": 2
     },
     {
-      "id": "fade3d5d-8f81-4def-abbe-ae7f404182b5",
-      "desc": "asdf",
-      "completed": false,
-      "userId": 1
+      "completed": true,
+      "id": "fade3d5d-8f81-4def-abbe-ae7f404182b5"
     }
   ],
   "users": [
