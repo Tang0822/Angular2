@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {AuthService} from './auth.service';
 import {UserService} from './user.service';
 import {AuthGuardService} from './auth-guard.service';
+import {BingImageService} from '../login/bing-image.service';
 
 @NgModule({
   imports: [
@@ -10,6 +11,7 @@ import {AuthGuardService} from './auth-guard.service';
   ],
   providers: [
     {provide: 'auth', useClass: AuthService},
+    {provide: 'bing', useClass: BingImageService},
     {provide: 'user', useClass: UserService},
     AuthGuardService
   ]

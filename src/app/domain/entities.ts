@@ -17,3 +17,8 @@ export class Auth {
   redirectUrl: string;
   errMsg: string;
 }
+
+export class Image {
+  contentUrl: string;
+  name: string;
+}

@@ -7,21 +7,21 @@ import {TodoModule} from './todo/todo.module';
 import {CoreModule} from './core/core.module';
 import {AppRoutingModule} from './app-routing.module';
 import {MdlModule} from 'angular2-mdl'
-import {SharedModule} from './shared/shared.module';
+import { RegisterDialogComponent } from './login/register-dialog/register-dialog.component';
+import {LoginModule} from './login/login.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
-    SharedModule,
     HttpModule,
-    AppRoutingModule,
-    TodoModule,
+    MdlModule,
     CoreModule,
-    MdlModule
+    AppRoutingModule,
+    LoginModule,
+    TodoModule,
   ],
 
   bootstrap: [AppComponent]
