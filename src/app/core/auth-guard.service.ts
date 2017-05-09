@@ -1,26 +1,22 @@
-import { Injectable } from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {Inject, Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Route, Router, RouterStateSnapshot} from '@angular/router';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class AuthGuardService implements CanActivate{
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+export class AuthGuardService implements CanActivate {
+
+  constructor(private router: Router, @Inject('auth') private authService) {
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     let url: string = state.url;
-    return this.checkLogin(url);
+    return this.authService.getAuth()
+      .map(auth => !auth.hasError);
   }
 
-  constructor(private router: Router) { }
-
-  checkLogin(url: string): boolean{
-    //已经登录，放行（根据 userId ！== null 有问题）
-    if (localStorage.getItem('userId') !== null) {
-      return true;
-    }
-    //未登录，存储要访问的url到本地
-    localStorage.setItem('redirectUrl', url);
-    //跳到登录页面
-    this.router.navigate(['/login']);
-    //返回false, 取消跳转
-    return false;
+  canLoad(route: Route): Observable<boolean> {
+    let url = `/${route.path}`;
+    return this.authService.getAuth()
+      .map(auth => !auth.hasError);
   }
-
 }

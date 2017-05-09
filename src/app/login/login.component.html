@@ -1,19 +1,32 @@
-<form #formRef="ngForm" (ngSubmit)=onSubmit(formRef.value)>
-  <fieldset ngModelGroup="login">
-    <div>
-      <div>
-        <input class="ng-invalid" required minlength="4" type="text" name="username" [(ngModel)]="username" #usernameRef="ngModel"/>
-        <span *ngIf="usernameRef.errors?.required">请填写用户名</span>
-        <span *ngIf="usernameRef.errors?.minlength">不能少于4位</span>
-        <p>
-          <input class="ng-invalid" required minlength="4" type="password" name="password" [(ngModel)]="password" #passwordRef="ngModel"/>
-          <span *ngIf="passwordRef.errors?.required">请填写密码</span>
-          <span *ngIf="passwordRef.errors?.minlength">不能少于4位</span>
-          <span *ngIf="auth?.hasError">{{auth.errMsg}}</span>
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
+<div>
+  <form (ngSubmit)="onSubmit()">
+    <mdl-textfield
+      type="text"
+      label="Username..."
+      name="username"
+      floating-label
+      required
+      [(ngModel)]="username"
+      #usernameRef="ngModel"
+    >
+    </mdl-textfield>
+    <div *ngIf="auth?.hasError" >
+      {{auth?.errMsg}}
     </div>
-  </fieldset>
-</form>
+    <mdl-textfield
+      type="password"
+      label="Password..."
+      name="password"
+      floating-label
+      required
+      [(ngModel)]="password"
+      #passwordRef="ngModel">
+    </mdl-textfield>
+    <button
+      mdl-button mdl-button-type="raised"
+      mdl-colored="primary"
+      mdl-ripple type="submit">
+      Login
+    </button>
+  </form>
+</div>
